@@ -1,0 +1,285 @@
+.orders-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.orders-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.summary-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg-blue { background-color: #e0f2fe; color: #0284c7; }
+.bg-yellow { background-color: var(--color-warning-bg); color: var(--color-warning); }
+.bg-green { background-color: var(--color-success-bg); color: var(--color-success); }
+
+.summary-info h3 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.summary-info p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.orders-list-card {
+  padding: 0;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.orders-table th {
+  padding: 16px 24px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: rgba(139, 90, 43, 0.02);
+}
+
+.orders-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.orders-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.orders-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.orders-table tbody tr:hover {
+  background-color: rgba(139, 90, 43, 0.02);
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-ready { background-color: var(--color-success-bg); color: var(--color-success); }
+.status-pending { background-color: var(--color-warning-bg); color: var(--color-warning); }
+.status-baking { background-color: var(--color-bg-sidebar); color: var(--color-primary); }
+.status-completed { background-color: #f1f5f9; color: #475569; }
+.status-cancelled { background-color: var(--color-danger-bg); color: var(--color-danger); }
+
+/* Create Order Form */
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: rgba(139, 90, 43, 0.02);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--color-border);
+}
+
+.section-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-primary-dark);
+}
+
+.item-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap; /* Allows wrapping on very small screens */
+}
+
+.product-select {
+  flex: 1;
+  min-width: 200px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.qty-control-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qty-input {
+  width: 50px;
+  padding: 8px 6px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-weight: 600;
+}
+
+.qty-unit-label {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.item-total {
+  text-align: right;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  white-space: nowrap; /* Prevents Rp and amount from splitting into two lines */
+  min-width: 90px;
+}
+
+.remove-item-btn {
+  color: var(--color-danger);
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-item-btn:hover {
+  background-color: var(--color-danger-bg);
+}
+
+.add-item-btn {
+  align-self: flex-start;
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+
+.add-item-btn:hover {
+  text-decoration: underline;
+}
+
+.order-summary-box {
+  background-color: var(--color-bg-sidebar);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  font-size: 1.1rem;
+}
+
+.total-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+/* Order Details Modal */
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail-header h3 {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list-group-item {
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-main);
+}
+
+.item-qty {
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-right: 12px;
+  display: inline-block;
+  width: 24px;
+}
+
+.item-name {
+  font-weight: 500;
+}
+
+.item-price {
+  font-weight: 600;
+}
+
+.detail-total {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding-top: 16px;
+  border-top: 2px dashed var(--color-border);
+}
+
+.status-updater label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.status-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: all 0.2s ease;
+}
+
+.status-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.status-btn.active {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.action-buttons .view-btn:hover {
+  background-color: var(--color-primary-light);
+  color: white;
+  border-color: var(--color-primary-light);
+}

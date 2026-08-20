@@ -1,0 +1,76 @@
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.kpi-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-icon-wrapper[data-type="default"] {
+  background-color: var(--color-bg-sidebar);
+  color: var(--color-primary);
+}
+
+.kpi-icon-wrapper[data-type="success"] {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.kpi-icon-wrapper[data-type="warning"] {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.kpi-icon-wrapper[data-type="danger"] {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.kpi-trend {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.kpi-trend.positive {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.kpi-trend.negative {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.kpi-title {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 4px;
+}
+
+.kpi-trend-text {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}

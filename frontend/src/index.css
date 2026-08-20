@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-bg-main: #fcfaf8;
+  --color-bg-surface: #ffffff;
+  --color-bg-sidebar: #f8f1eb;
+  
+  --color-primary: #8b5a2b; /* Warm brown */
+  --color-primary-light: #a67644;
+  --color-primary-dark: #6e4420;
+  
+  --color-secondary: #e5a93a; /* Golden crust */
+  --color-secondary-light: #f3c26b;
+  
+  --color-caramel: #d4a373;
+  --color-orange: #f4a261;
+  --color-accent: #e07a5f;
+  
+  --color-text-main: #2d2d2d;
+  --color-text-muted: #756a62;
+  
+  --color-border: #e8ded3;
+  --color-border-hover: #d1c1b3;
+
+  --color-success: #4a8a5b;
+  --color-success-bg: #e5f2e8;
+  --color-warning: #c27a27;
+  --color-warning-bg: #fcf1e3;
+  --color-danger: #b94a48;
+  --color-danger-bg: #fae8e8;
+
+  --shadow-sm: 0 1px 3px rgba(139, 90, 43, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(139, 90, 43, 0.08), 0 2px 4px -1px rgba(139, 90, 43, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(139, 90, 43, 0.08), 0 4px 6px -2px rgba(139, 90, 43, 0.04);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Layout Utilities */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: var(--color-bg-sidebar);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  padding-bottom: 60px;
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-main);
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+/* Common Components */
+.card {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  padding: 24px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
