@@ -41,7 +41,7 @@ export const Dashboard: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
         
         const [ordersRes, merchRes] = await Promise.all([
           fetch('http://localhost:3001/api/orders', { headers }),
