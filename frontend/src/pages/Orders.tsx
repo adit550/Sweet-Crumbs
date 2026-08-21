@@ -83,7 +83,7 @@ export const Orders: React.FC = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      const res = await fetch('http://localhost:3001/api/orders', {
+      const res = await fetch('/api/orders', {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {}
       });
       if (res.ok) {
@@ -100,7 +100,7 @@ export const Orders: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/merch');
+      const res = await fetch('/api/merch');
       if (res.ok) {
         const data = await res.json();
         setAvailableProducts(data);
@@ -133,7 +133,7 @@ export const Orders: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      const res = await fetch('http://localhost:3001/api/orders', {
+      const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ export const Orders: React.FC = () => {
   const handleStatusChange = async (orderId: string, newStatus: Order['status']) => {
     try {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      const res = await fetch(`http://localhost:3001/api/orders/${orderId}/status`, {
+      const res = await fetch(`/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ export const Orders: React.FC = () => {
     if (confirm('Apakah Anda yakin ingin menghapus pesanan ini?')) {
       try {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const res = await fetch(`http://localhost:3001/api/orders/${id}`, {
+        const res = await fetch(`/api/orders/${id}`, {
           method: 'DELETE',
           headers: token ? { 'Authorization': `Bearer ${token}` } : {}
         });

@@ -18,7 +18,7 @@ export const AccountOrders: React.FC = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      const res = await fetch('http://localhost:3001/api/orders', {
+      const res = await fetch('/api/orders', {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {}
       });
       if (res.ok) {

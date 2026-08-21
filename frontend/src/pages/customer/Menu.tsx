@@ -21,7 +21,7 @@ export const Menu: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/merch');
+      const res = await fetch('/api/merch');
       if (res.ok) {
         const data = await res.json();
         const mappedData = data.map((item: any) => ({

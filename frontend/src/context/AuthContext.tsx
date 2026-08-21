@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (token) {
         try {
           // Fetch user profile from backend
-          const response = await fetch('http://localhost:3001/api/auth/me', {
+          const response = await fetch('/api/auth/me', {
             headers: {
               Authorization: `Bearer ${token}`
             }

@@ -44,8 +44,8 @@ export const Dashboard: React.FC = () => {
         const headers: Record<string, string> = token ? { 'Authorization': `Bearer ${token}` } : {};
         
         const [ordersRes, merchRes] = await Promise.all([
-          fetch('http://localhost:3001/api/orders', { headers }),
-          fetch('http://localhost:3001/api/merch', { headers })
+          fetch('/api/orders', { headers }),
+          fetch('/api/merch', { headers })
         ]);
         
         if (ordersRes.ok) setOrders(await ordersRes.json());
