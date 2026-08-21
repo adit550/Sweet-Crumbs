@@ -150,6 +150,7 @@
 /* Content Grid */
 .menu-content {
   flex: 1;
+  min-height: 65vh; /* Mencegah layout shift (jump ke footer) saat hasil filter 0 */
 }
 
 .menu-results-header {

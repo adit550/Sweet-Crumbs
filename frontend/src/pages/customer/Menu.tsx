@@ -10,10 +10,22 @@ export const Menu: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
-  const [maxPrice, setMaxPrice] = useState<number>(100000);
+  const [maxPrice, setMaxPrice] = useState<number>(Infinity);
 
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<string[]>(['All']);
+
+  // Derived available maximum price from all original products
+  const availableMaxPrice = products.length > 0 
+    ? Math.max(...products.map(p => Number(p.price))) 
+    : 100000;
+
+  // Sync maxPrice with availableMaxPrice once products are loaded if it's still Infinity
+  useEffect(() => {
+    if (products.length > 0 && maxPrice === Infinity) {
+      setMaxPrice(availableMaxPrice);
+    }
+  }, [products, availableMaxPrice]);
 
   useEffect(() => {
     fetchProducts();
@@ -64,9 +76,19 @@ export const Menu: React.FC = () => {
   const filteredProducts = products.filter(product => {
     const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPrice = product.price <= maxPrice;
+    const matchesPrice = Number(product.price) <= maxPrice;
     return matchesCategory && matchesSearch && matchesPrice;
   });
+
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const [emptyHeight, setEmptyHeight] = useState<number>(0);
+
+  // Capture the height before it collapses
+  useEffect(() => {
+    if (filteredProducts.length > 0 && contentRef.current) {
+      setEmptyHeight(contentRef.current.offsetHeight);
+    }
+  }, [filteredProducts]);
 
   return (
     <div className="menu-page">
@@ -114,22 +136,26 @@ export const Menu: React.FC = () => {
               <input 
                 type="range" 
                 min="0" 
-                max="100000" 
+                max={availableMaxPrice} 
                 step="5000"
                 className="range-slider" 
-                value={maxPrice}
+                value={maxPrice === Infinity ? availableMaxPrice : maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
               />
               <div className="price-labels">
                 <span>Rp 0</span>
-                <span>Rp {(maxPrice / 1000).toFixed(0)}k</span>
+                <span>Rp {((maxPrice === Infinity ? availableMaxPrice : maxPrice) / 1000).toFixed(0)}k</span>
               </div>
             </div>
           </div>
         </aside>
 
         {/* Product Grid */}
-        <div className="menu-content">
+        <div 
+          className="menu-content" 
+          ref={contentRef}
+          style={{ minHeight: filteredProducts.length === 0 && emptyHeight > 0 ? `${emptyHeight}px` : undefined }}
+        >
           <div className="menu-results-header">
             <span>Showing {filteredProducts.length} results</span>
             <div className="sort-dropdown">
@@ -149,13 +175,14 @@ export const Menu: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="no-results">
+            <div className="no-results" style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <h3>No products found</h3>
               <p>Try adjusting your search or filters.</p>
               <button className="btn btn-outline" onClick={() => {
                 setActiveCategory('All');
                 setSearchQuery('');
                 setSearchParams({});
+                setMaxPrice(availableMaxPrice);
               }}>Clear Filters</button>
             </div>
           )}
@@ -164,3 +191,4 @@ export const Menu: React.FC = () => {
     </div>
   );
 };
+
