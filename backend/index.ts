@@ -83,32 +83,35 @@ app.get(
       .post(
         "/register",
         async ({ body, set }) => {
-          const { email, password, name, phone, role } = body;
-          
-          // Check if user already exists
-          const existingUser = await prisma.user.findUnique({
-            where: { email },
-          });
-          
-          if (existingUser) {
-            set.status = 400;
-            return { error: "Email already in use" };
+          try {
+            const { email, password, name, phone, role } = body;
+            
+            // Check if user already exists
+            const existingUser = await prisma.user.findUnique({
+              where: { email },
+            });
+            
+            if (existingUser) {
+              set.status = 400;
+              return { error: "Email already in use" };
+            }
+            
+            // Hash password using bcryptjs for Node.js compatibility on Vercel
+            const hashedPassword = await bcrypt.hash(password, 10);
+            
+            const user = await prisma.user.create({
+              data: {
+                email,
+                password: hashedPassword,
+                role: role || "CUSTOMER",
+              },
+            });
+            
+            return { message: "User registered successfully", user: { id: user.id, email: user.email, role: user.role } };
+          } catch (err: any) {
+            set.status = 500;
+            return { error: "Database error: " + (err.message || err.toString()) };
           }
-          
-          // Hash password using bcryptjs for Node.js compatibility on Vercel
-          const hashedPassword = await bcrypt.hash(password, 10);
-          
-          const user = await prisma.user.create({
-            data: {
-              email,
-              password: hashedPassword,
-              role: role || "CUSTOMER",
-              // we don't have name/phone in schema currently, we should just use what's there or update schema.
-              // For now, we only store email/password/role in User as per schema.
-            },
-          });
-          
-          return { message: "User registered successfully", user: { id: user.id, email: user.email, role: user.role } };
         },
         {
           body: t.Object({
