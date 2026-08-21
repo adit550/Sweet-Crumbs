@@ -81,14 +81,17 @@ export const Menu: React.FC = () => {
   });
 
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const [emptyHeight, setEmptyHeight] = useState<number>(0);
+  const [lockedHeight, setLockedHeight] = useState<number>(0);
 
-  // Capture the height before it collapses
+  // Merekam tinggi maksimal area konten agar tidak pernah menyusut (mencegah jump layout)
   useEffect(() => {
-    if (filteredProducts.length > 0 && contentRef.current) {
-      setEmptyHeight(contentRef.current.offsetHeight);
+    if (contentRef.current) {
+      const currentHeight = contentRef.current.offsetHeight;
+      if (currentHeight > lockedHeight) {
+        setLockedHeight(currentHeight);
+      }
     }
-  }, [filteredProducts]);
+  }, [filteredProducts, lockedHeight]);
 
   return (
     <div className="menu-page">
@@ -154,7 +157,7 @@ export const Menu: React.FC = () => {
         <div 
           className="menu-content" 
           ref={contentRef}
-          style={{ minHeight: filteredProducts.length === 0 && emptyHeight > 0 ? `${emptyHeight}px` : undefined }}
+          style={{ minHeight: lockedHeight > 0 ? `${lockedHeight}px` : undefined }}
         >
           <div className="menu-results-header">
             <span>Showing {filteredProducts.length} results</span>
