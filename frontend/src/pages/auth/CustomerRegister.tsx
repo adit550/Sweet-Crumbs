@@ -157,9 +157,10 @@ export const CustomerRegister: React.FC = () => {
             </div>
             
             <div className="form-options">
-              <label className="terms-checkbox">
+              <label className="terms-checkbox" htmlFor="agreeTerms">
                 <input 
                   type="checkbox" 
+                  id="agreeTerms"
                   checked={agreeTerms}
                   onChange={(e) => setAgreeTerms(e.target.checked)}
                 />
