@@ -3,6 +3,7 @@ import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { jwt } from "@elysiajs/jwt";
 import { prisma } from "./db";
+import bcrypt from "bcryptjs";
 
 export const app = new Elysia()
   .use(cors())
@@ -94,8 +95,8 @@ app.get(
             return { error: "Email already in use" };
           }
           
-          // Hash password using Bun's native password hasher
-          const hashedPassword = await Bun.password.hash(password);
+          // Hash password using bcryptjs for Node.js compatibility on Vercel
+          const hashedPassword = await bcrypt.hash(password, 10);
           
           const user = await prisma.user.create({
             data: {
@@ -134,7 +135,7 @@ app.get(
             return { error: "Invalid email or password" };
           }
           
-          const isMatch = await Bun.password.verify(password, user.password);
+          const isMatch = await bcrypt.compare(password, user.password);
           if (!isMatch) {
             set.status = 401;
             return { error: "Invalid email or password" };
