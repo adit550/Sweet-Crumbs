@@ -61,9 +61,12 @@ export const Home: React.FC = () => {
           <h1>Freshly Baked, Made With Love</h1>
           <p>Delicious breads, cakes, pastries, and sweet treats freshly baked every day.</p>
           <div className="hero-buttons">
-            <Link to="/menu" className="btn btn-primary">
+            <button 
+              onClick={() => document.getElementById('explore-menu')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="btn btn-primary"
+            >
               Explore Menu
-            </Link>
+            </button>
             <Link to="/menu" className="btn btn-outline">
               Order Now
             </Link>
@@ -72,7 +75,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="categories-section">
+      <section className="categories-section" id="explore-menu">
         <div className="section-header">
           <h2>Explore Our Menu</h2>
         </div>

@@ -10,6 +10,7 @@ export const Menu: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [maxPrice, setMaxPrice] = useState<number>(100000);
 
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<string[]>(['All']);
@@ -63,7 +64,8 @@ export const Menu: React.FC = () => {
   const filteredProducts = products.filter(product => {
     const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const matchesPrice = product.price <= maxPrice;
+    return matchesCategory && matchesSearch && matchesPrice;
   });
 
   return (
@@ -107,12 +109,20 @@ export const Menu: React.FC = () => {
 
           <div className="filter-section">
             <h3><SlidersHorizontal size={18} /> Price Range</h3>
-            {/* Price filter placeholder */}
+            {/* Price filter */}
             <div className="price-filter">
-              <input type="range" min="0" max="500000" className="range-slider" />
+              <input 
+                type="range" 
+                min="0" 
+                max="100000" 
+                step="5000"
+                className="range-slider" 
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+              />
               <div className="price-labels">
                 <span>Rp 0</span>
-                <span>Rp 500k</span>
+                <span>Rp {(maxPrice / 1000).toFixed(0)}k</span>
               </div>
             </div>
           </div>

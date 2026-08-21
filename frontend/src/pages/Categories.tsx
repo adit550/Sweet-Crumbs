@@ -17,6 +17,7 @@ const initialCategories: Category[] = [
   { id: '4', name: 'Cookies', description: 'Assorted cookies, biscotti, and macarons.', itemCount: 8 },
   { id: '5', name: 'Donut', description: 'Classic glazed and filled donuts.', itemCount: 6 },
   { id: '6', name: 'Dessert', description: 'Puddings, tarts, and other sweet treats.', itemCount: 10 },
+  { id: '7', name: 'Drinks', description: 'Hot and cold beverages including coffee, tea, and lattes.', itemCount: 5 },
 ];
 
 export const Categories: React.FC = () => {
