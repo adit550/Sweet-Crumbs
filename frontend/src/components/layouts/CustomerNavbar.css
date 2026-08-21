@@ -139,6 +139,23 @@
   transform: translateY(-2px);
 }
 
+.signin-btn-outline {
+  background-color: transparent;
+  color: var(--color-primary) !important;
+  text-decoration: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  border: 1.5px solid var(--color-primary);
+}
+
+.signin-btn-outline:hover {
+  background-color: rgba(92, 58, 33, 0.05);
+  transform: translateY(-2px);
+}
+
 /* User Dropdown */
 .user-dropdown-container {
   position: relative;

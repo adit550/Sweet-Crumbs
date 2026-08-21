@@ -101,7 +101,7 @@ export const CustomerNavbar: React.FC = () => {
             </div>
           ) : (
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-              <Link to="/login" className="login-btn" style={{ background: 'transparent', color: '#5c3a21', border: '1px solid #5c3a21' }}>Sign In</Link>
+              <Link to="/login" className="signin-btn-outline">Sign In</Link>
               <Link to="/register" className="login-btn">Sign Up</Link>
             </div>
           )}
