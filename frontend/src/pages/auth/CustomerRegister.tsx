@@ -178,7 +178,7 @@ export const CustomerRegister: React.FC = () => {
         </div>
         <div className="customer-register-image">
           <img 
-            src="https://images.unsplash.com/photo-1555507036-ab1f40ce88cb?q=80&w=600&auto=format&fit=crop" 
+            src="/products/almond_croissant.jpg" 
             alt="Fresh baked goods" 
           />
         </div>

@@ -55,7 +55,7 @@ export const AdminLogin: React.FC = () => {
       <div className="admin-login-card">
         <div className="admin-login-image">
           <img 
-            src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop" 
+            src="/products/sourdough_loaf.jpg" 
             alt="Sweet Crumbs Bakery Artisanal Bread" 
           />
         </div>

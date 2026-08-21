@@ -53,7 +53,7 @@ export const CustomerLogin: React.FC = () => {
       <div className="customer-login-card">
         <div className="customer-login-image">
           <img 
-            src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=600&auto=format&fit=crop" 
+            src="/products/ciabatta_bread.jpg" 
             alt="Delicious bakery treats" 
           />
         </div>
