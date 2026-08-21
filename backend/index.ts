@@ -649,7 +649,14 @@ app.get(
           console.error("GET /api/orders error:", err);
           set.status = 500;
           return { error: "An internal server error occurred" };
-        }
+        };
+      })
+      .get("/debug-env", () => {
+        return {
+          hasDbUrl: !!process.env.DATABASE_URL,
+          hasDirectUrl: !!process.env.DIRECT_URL,
+          nodeEnv: process.env.NODE_ENV,
+        };
       })
       .post("/", async ({ body, set, headers, jwt }) => {
         const auth = await checkAuth(headers, jwt, set, false); // Any authenticated user
