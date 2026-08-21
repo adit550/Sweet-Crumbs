@@ -8,7 +8,8 @@
     "start": "bun index.ts",
     "db:push": "bunx prisma db push",
     "db:generate": "bunx prisma generate",
-    "db:studio": "bunx prisma studio"
+    "db:studio": "bunx prisma studio",
+    "postinstall": "bunx prisma generate"
   },
   "devDependencies": {
     "@types/bun": "latest",
