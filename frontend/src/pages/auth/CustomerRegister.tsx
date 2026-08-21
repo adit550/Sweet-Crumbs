@@ -36,7 +36,7 @@ export const CustomerRegister: React.FC = () => {
     setIsSubmitting(true);
     try {
       // 1. Register the user
-      const registerRes = await fetch('http://localhost:3001/api/auth/register', {
+      const registerRes = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name: fullName, phone, role: 'CUSTOMER' }),
@@ -51,7 +51,7 @@ export const CustomerRegister: React.FC = () => {
       }
 
       // 2. Automatically log them in
-      const loginRes = await fetch('http://localhost:3001/api/auth/login', {
+      const loginRes = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
