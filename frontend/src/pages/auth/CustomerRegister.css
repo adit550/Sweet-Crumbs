@@ -60,13 +60,13 @@
 }
 
 .customer-register-form .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   flex: 1;
 }
 
 .form-row {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 @media (max-width: 600px) {
@@ -120,6 +120,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  padding: 0;
 }
 
 .toggle-password:hover {
@@ -127,17 +128,30 @@
 }
 
 .form-options {
+  margin-top: 1rem;
   margin-bottom: 2rem;
   font-size: 0.875rem;
 }
 
-.terms-checkbox {
+.customer-register-form .terms-checkbox {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
   gap: 0.5rem;
   color: #5c3a21;
   cursor: pointer;
-  font-weight: normal;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.customer-register-form .terms-checkbox input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #5c3a21;
+  flex-shrink: 0;
 }
 
 .customer-register-btn {
