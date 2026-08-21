@@ -734,12 +734,19 @@ app.get(
           return { error: "An internal server error occurred" };
         }
       })
-  )
-  .listen(3001);
+  );
 
-console.log(
-  `🚀 Server running at http://${app.server?.hostname}:${app.server?.port}`
-);
-console.log(
-  `📚 Swagger documentation: http://${app.server?.hostname}:${app.server?.port}/swagger`
-);
+// Only listen locally on Bun. Vercel Node runtime doesn't support listen().
+if (typeof Bun !== "undefined") {
+  app.listen(3001);
+  console.log(
+    `🚀 Server running at http://${app.server?.hostname}:${app.server?.port}`
+  );
+  console.log(
+    `📚 Swagger documentation: http://${app.server?.hostname}:${app.server?.port}/swagger`
+  );
+}
+
+export default {
+  fetch: app.fetch,
+};
