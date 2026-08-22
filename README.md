@@ -1,190 +1,321 @@
-# Bakery Management Dashboard
+# Sweet Crumbs (Bakery Management System)
 
-Sistem manajemen toko roti (L'Atelier Bakery) untuk mengatur inventaris, pesanan, daftar pelanggan, serta memberikan akses frontend kepada pelanggan untuk melakukan pemesanan (checkout).
+Sistem manajemen toko roti (Sweet Crumbs / L'Atelier Bakery) untuk mengatur inventaris, pesanan, daftar pelanggan, serta memberikan akses frontend kepada pelanggan untuk melakukan pemesanan (checkout) melalui Dashboard. Aplikasi ini mencakup fungsionalitas CRUD penuh untuk manajemen produk (merchandise) dan pesanan (orders).
 
 ## Tech Stack
 
-- **Frontend:** React + TypeScript (menggunakan Vite)
-- **Backend:** Bun + Elysia.js
-- **Database:** PostgreSQL
-- **ORM:** Prisma
+- **Backend**: Bun, Elysia.js, TypeScript
+- **Frontend**: React, TypeScript, Vite
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Testing**: Bun Test
 
 ---
 
-## Prerequisites
+## Requirements
 
-Untuk menjalankan proyek ini di lingkungan lokal Anda, pastikan telah ter-install:
+Untuk menjalankan proyek ini, pastikan Anda telah menginstal perangkat lunak berikut:
 
-- [Bun](https://bun.sh/) (sebagai *runtime* & *package manager* backend)
-- [Node.js](https://nodejs.org/) / npm (untuk frontend)
-- [PostgreSQL](https://www.postgresql.org/) (server database lokal)
+- [Bun](https://bun.sh/) (Runtime & Package Manager)
+- [Node.js](https://nodejs.org/) (Opsi alternatif untuk frontend, Vite membutuhkan Node env)
+- [PostgreSQL](https://www.postgresql.org/) (Server Database)
 - Git
-
----
-
-## Installation / Setup
-
-1. **Clone repositori**
-   ```bash
-   git clone <repository_url>
-   cd "Bakery Management System"
-   ```
-
-2. **Setup Backend**
-   ```bash
-   cd backend
-   bun install
-   ```
-
-3. **Setup Frontend**
-   ```bash
-   cd frontend
-   npm install
-   ```
-
----
-
-## Environment Variables
-
-Proyek menggunakan *environment variables* untuk keamanan. Di dalam folder `backend/`, buat file `.env`.
-
-**Jangan commit file `.env` yang berisi kredensial asli!**
-
-Contoh `.env` untuk backend:
-
-```env
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-JWT_SECRET="your_jwt_secret_key"
-```
-
----
-
-## PostgreSQL Setup
-
-1. Pastikan server PostgreSQL telah aktif.
-2. Buat satu database kosong untuk proyek ini (misalnya `bakery_db`).
-3. Sesuaikan `DATABASE_URL` pada file `backend/.env` dengan kredensial PostgreSQL Anda.
-
----
-
-## Prisma Setup
-
-Proyek ini telah dikonfigurasi penuh dengan Prisma (`backend/prisma/schema.prisma`).
-
-Setelah mengonfigurasi `.env`, sinkronisasi skema Prisma ke database dengan menjalankan perintah berikut di dalam folder `backend/`:
-
-```bash
-# Untuk sinkronisasi awal dan pembuatan tabel (push schema ke database)
-bunx prisma db push
-
-# Untuk generate Prisma Client
-bunx prisma generate
-```
-
-*Catatan: Proyek ini menggunakan `db push` untuk sinkronisasi. Jangan gunakan `prisma migrate reset` di lingkungan produksi atau jika tidak disengaja ingin menghapus semua data!*
-
----
-
-## Running the Application
-
-Jalankan aplikasi dengan dua terminal terpisah:
-
-### Terminal 1 → Backend
-```bash
-cd backend
-bun run dev
-```
-API akan berjalan (secara *default* di `http://localhost:3001`).
-
-### Terminal 2 → Frontend
-```bash
-cd frontend
-npm run dev
-```
-Aplikasi web dapat diakses (secara *default* di `http://localhost:5173`).
+- Web Browser Modern (Chrome, Firefox, dll.)
 
 ---
 
 ## Project Structure
 
 ```text
-Bakery Management System/
+Sweet-Crumbs/
 ├── backend/
-│   ├── prisma/             # Schema & Prisma Config
-│   ├── .env                # Variabel Lingkungan
-│   ├── index.ts            # Entry point Elysia & Endpoint API
-│   └── package.json        # Dependensi backend
+│   ├── prisma/             # Schema & konfigurasi Prisma
+│   ├── tests/              # Unit & Integration Tests (Bun Test)
+│   ├── index.ts            # Entry point backend & Routes API
+│   ├── package.json
+│   └── .env                # (Dibuat manual)
 ├── frontend/
-│   ├── src/                # Kode React (Components, Pages, dsb.)
-│   └── package.json        # Dependensi frontend
+│   ├── public/
+│   ├── src/                # Komponen React & Pages
+│   ├── package.json
+│   └── vite.config.ts
 └── README.md
 ```
 
 ---
 
-## API Documentation
+## Database Setup
 
-Endpoint berjalan pada server backend.
-
-### Authentication
-
-API menggunakan JWT authentication yang didapat melalui endpoint login.
-
-#### Login
-```http
-POST /login
-```
-**Request Body:**
-```json
-{
-  "email": "admin1@gmail.com",
-  "password": "your_password"
-}
-```
-**Success Response:**
-```json
-{
-  "message": "Login successful",
-  "token": "<jwt_token>",
-  "user": {
-    "id": "...",
-    "email": "...",
-    "role": "..."
-  }
-}
-```
-
-*Endpoint yang diamankan belum diterapkan ketat di rute pesanan, namun fitur `/me` membutuhkan Bearer token:*
-```http
-Authorization: Bearer <token>
-```
+1. Pastikan server PostgreSQL telah berjalan di komputer Anda.
+2. Buat database baru (contoh: `bakery_db`).
+3. Konfigurasi kredensial akses pada file `.env` (lihat bagian Backend Setup).
+4. Proyek ini menggunakan Prisma ORM. Sinkronisasi tabel dilakukan melalui perintah `bunx prisma db push` (jangan gunakan `migrate reset` kecuali secara eksplisit diperlukan).
 
 ---
 
-## CRUD API (Orders & Merchandise)
+## Backend Setup
 
-Operasi manajemen toko benar-benar tersimpan ke PostgreSQL melalui Prisma.
+1. Buka terminal dan masuk ke folder `backend`:
+   ```bash
+   cd backend
+   bun install
+   ```
 
-### 1. Dapatkan Daftar Order (READ)
-```http
-GET /api/orders
+2. Buat file `.env` di dalam folder `backend` berdasarkan konfigurasi PostgreSQL Anda. **Jangan masukkan credential asli ke repository.**
+   Contoh konfigurasi `.env`:
+   ```env
+   DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/DATABASE
+   JWT_SECRET=your_secret_key_here
+   ```
+
+3. Generate Prisma Client dan sinkronisasi skema database:
+   ```bash
+   bunx prisma generate
+   bunx prisma db push
+   ```
+   *(Catatan: Anda juga bisa menjalankan `bun run db:push` / `bun run db:generate`)*
+
+4. Jalankan server backend:
+   ```bash
+   bun run dev
+   ```
+   Backend akan berjalan di `http://localhost:3001`.
+
+---
+
+## Frontend Setup
+
+1. Buka terminal baru dan masuk ke folder `frontend`:
+   ```bash
+   cd frontend
+   bun install
+   ```
+   *(Atau gunakan `npm install` jika menggunakan npm)*
+
+2. Jalankan development server untuk frontend:
+   ```bash
+   bun run dev
+   ```
+   *(Atau `npm run dev`)*
+   
+   Frontend dapat diakses di `http://localhost:5173`.
+
+---
+
+## API Authentication
+
+API menggunakan **JWT (JSON Web Token)** untuk endpoint yang dilindungi (Admin/Customer). 
+
+- **Cara mendapatkan token**: Lakukan request POST ke `/api/auth/login`. Token akan dikembalikan pada atribut `token`.
+- **Cara mengirim token**: Sisipkan token pada header `Authorization` dengan format:
+  ```http
+  Authorization: Bearer YOUR_TOKEN
+  ```
+- **Role/Permission**: Pengguna memiliki role `CUSTOMER` atau `ADMIN`. Beberapa endpoint seperti Update/Delete Order memerlukan role `ADMIN`.
+
+---
+
+## API Documentation
+
+Endpoint base URL: `http://localhost:3001`
+
+### 1. System
+
+#### GET `/api/health`
+**Description:** Memeriksa status kesehatan server.
+**Authentication:** Public
+**Response Success (200 OK):**
+```json
+{
+  "status": "healthy",
+  "timestamp": "2023-10-25T10:00:00.000Z"
+}
 ```
-**Success Response (200):**
-Mengembalikan array objek order (termasuk list item yang menempel).
 
-### 2. Buat Order Baru (CREATE)
-```http
-POST /api/orders
-```
+### 2. Authentication
+
+#### POST `/api/auth/register`
+**Description:** Mendaftarkan pengguna baru.
+**Authentication:** Public
 **Request Body:**
 ```json
 {
-  "customerName": "John Doe",
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "John Doe",
+  "phone": "08123456789",
+  "role": "CUSTOMER"
+}
+```
+**Response Success (200 OK):**
+```json
+{
+  "message": "User registered successfully",
+  "user": {
+    "id": "cuid...",
+    "email": "user@example.com",
+    "role": "CUSTOMER"
+  }
+}
+```
+**Error Response (400 Bad Request):** Email sudah digunakan.
+
+#### POST `/api/auth/login`
+**Description:** Autentikasi pengguna dan mendapatkan JWT token.
+**Authentication:** Public
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+**Response Success (200 OK):**
+```json
+{
+  "message": "Login successful",
+  "token": "YOUR_TOKEN",
+  "user": {
+    "id": "cuid...",
+    "email": "user@example.com",
+    "role": "CUSTOMER"
+  }
+}
+```
+**Error Response (401 Unauthorized):** Invalid email or password.
+
+#### GET `/api/auth/me`
+**Description:** Mendapatkan profil pengguna yang sedang login.
+**Authentication:** Required (Bearer Token)
+**Response Success (200 OK):**
+```json
+{
+  "id": "cuid...",
+  "email": "user@example.com",
+  "role": "CUSTOMER"
+}
+```
+**Error Response (401 Unauthorized):** Token tidak valid atau tidak disertakan.
+
+### 3. Merchandise (Products)
+
+#### GET `/api/merch`
+**Description:** Mendapatkan daftar semua merchandise/produk (mendukung query `search`, `category`, `status`).
+**Authentication:** Public
+**Response Success (200 OK):**
+```json
+[
+  {
+    "id": "cuid...",
+    "name": "Butter Croissant",
+    "category": "Pastry",
+    "price": 25000,
+    "stock": 50,
+    "description": "Flaky, buttery perfection.",
+    "imageUrl": "/products/butter_croissant.jpg",
+    "status": "ACTIVE",
+    "createdAt": "2023-10-25T10:00:00.000Z",
+    "updatedAt": "2023-10-25T10:00:00.000Z"
+  }
+]
+```
+
+#### GET `/api/merch/:id`
+**Description:** Mendapatkan detail satu produk berdasarkan ID.
+**Authentication:** Public
+**Status Code:** `200 OK` atau `404 Not Found`.
+
+#### POST `/api/merch`
+**Description:** Menambahkan produk baru.
+**Authentication:** Required
+**Request Body:**
+```json
+{
+  "name": "New Pastry",
+  "category": "Pastry",
+  "price": 30000,
+  "stock": 10,
+  "description": "A new delicious pastry.",
+  "status": "ACTIVE"
+}
+```
+**Response Success (201 Created):** Objek produk yang baru dibuat.
+
+#### PUT `/api/merch/:id`
+**Description:** Mengubah data produk yang ada.
+**Authentication:** Required
+**Request Body:** (Semua field opsional)
+```json
+{
+  "price": 35000,
+  "stock": 15
+}
+```
+**Response Success (200 OK):** Objek produk yang telah diperbarui.
+**Error Response:** `404 Not Found`.
+
+#### DELETE `/api/merch/:id`
+**Description:** Menghapus produk.
+**Authentication:** Required
+**Response Success (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Merchandise deleted successfully"
+}
+```
+
+#### POST `/api/merch/seed`
+**Description:** Mengisi database dengan data demo produk (akan menghapus produk sebelumnya).
+**Authentication:** Public
+**Response Success (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Successfully seeded 27 demo merchandise items!"
+}
+```
+
+### 4. Orders
+
+#### GET `/api/orders`
+**Description:** Mendapatkan daftar pesanan. Admin melihat semua pesanan, Customer hanya melihat pesanan miliknya.
+**Authentication:** Required
+**Response Success (200 OK):**
+```json
+[
+  {
+    "id": "cuid...",
+    "customerName": "user@example.com",
+    "date": "2023-10-25 10:30",
+    "totalAmount": 70000,
+    "status": "Pending",
+    "createdAt": "...",
+    "items": [
+      {
+        "id": "cuid...",
+        "productId": "cuid...",
+        "productName": "Butter Croissant",
+        "quantity": 2,
+        "unitPrice": 35000
+      }
+    ]
+  }
+]
+```
+
+#### POST `/api/orders`
+**Description:** Membuat pesanan baru.
+**Authentication:** Required
+**Request Body:**
+```json
+{
+  "customerName": "user@example.com",
   "date": "2023-10-25 10:30",
-  "totalAmount": 110000,
+  "totalAmount": 70000,
   "items": [
     {
-      "productId": "p1",
+      "productId": "cuid...",
       "productName": "Butter Croissant",
       "quantity": 2,
       "unitPrice": 35000
@@ -192,100 +323,103 @@ POST /api/orders
   ]
 }
 ```
+**Response Success (201 Created):** Objek pesanan yang baru dibuat.
 
-### 3. Ubah Status Order (UPDATE)
-```http
-PUT /api/orders/:id/status
-```
+#### PUT `/api/orders/:id/status`
+**Description:** Mengubah status pesanan.
+**Authentication:** Required (Admin Only)
 **Request Body:**
 ```json
 {
   "status": "Ready"
 }
 ```
+**Response Success (200 OK):** Objek pesanan yang telah diperbarui.
 
-### 4. Hapus Order (DELETE)
-```http
-DELETE /api/orders/:id
+#### DELETE `/api/orders/:id`
+**Description:** Menghapus pesanan.
+**Authentication:** Required (Admin Only)
+**Response Success (200 OK):**
+```json
+{
+  "success": true
+}
 ```
-**Success Response (200):** Menghapus baris secara persisten.
-
-### 5. Dapatkan Daftar Produk
-```http
-GET /api/merch
-```
-**Success Response (200):** Mengembalikan inventaris produk toko roti.
-
----
-
-## Error Handling
-
-Standard HTTP Response digunakan:
-- `200` / `201`: Sukses.
-- `400`: Bad Request (Bentuk validasi error seperti kehilangan data wajib).
-- `401`: Unauthorized (Gagal login, token tidak valid).
-- `404`: Not Found.
-- `500`: Internal Server Error (Kendala di tingkat PostgreSQL/Prisma).
-
----
-
-## Frontend
-
-- Dibangun menggunakan **React**, dikemas lewat **Vite**.
-- Sistem perutean (**react-router-dom**) memisahkan area:
-  - `/admin/*` untuk *Dashboard*, *Order Management*, *Inventory*.
-  - *Route Dasar* (`/`, `/menu`, `/cart`, `/checkout`) untuk tampilan interaktif pelanggan.
-- Autentikasi diselubungi Context API (`AuthContext`) yang menjembatani JWT.
-
----
-
-## Backend
-
-- Menggunakan **Elysia.js** (berbasis Bun) untuk menjamin operasi ekstra cepat.
-- **Prisma ORM** menyambungkan rute *endpoint* langsung ke PostgreSQL.
-- Data disajikan dengan skema bertipe statis untuk kesesuaian lintas lapisan (*type-safety*).
-
----
-
-## Troubleshooting
-
-### Database Connection Error
-Jika saat menjalankan backend muncul error koneksi Prisma:
-- Pastikan layanan *PostgreSQL* lokal/remote di PC Anda sudah berjalan.
-- Buka file `backend/.env` dan pastikan kredensial `DATABASE_URL` (terutama kata sandi dan nama database) benar.
-- Coba validasi konfigurasi dengan menjalankan: `bunx prisma validate` di folder backend.
-
-### API Connection Error
-- Pastikan Terminal Backend tetap aktif saat Anda menjalankan *Frontend*.
-- Periksa port pada *backend*. Jika tidak sama dengan port referensi pada frontend, sesuaikan pengaturan `fetch()` atau `Cors`.
 
 ---
 
 ## Testing
 
-### Unit Testing
+Proyek ini dilengkapi dengan Unit Test dan Integration Test menggunakan `bun:test`. 
+Integration test menguji jalur end-to-end dari `Elysia.js → Prisma → PostgreSQL Test Database`.
 
-Testing menggunakan Bun Test. Unit Test difokuskan untuk menguji logika bisnis tanpa bergantung pada database production.
-
-Run:
+Untuk menjalankan tes:
 ```bash
 cd backend
 bun test
 ```
 
-Test yang telah dibuat dan dijalankan:
-- **Product validation**: Menguji validasi input (nama, harga, stok) saat membuat produk baru.
-- **Order calculation**: Menguji fungsi kalkulasi order (subtotal, biaya pengiriman, total).
-- **Authentication validation**: Menguji validasi login dan registrasi (email valid, format password).
+*Catatan: Pastikan database testing sudah dikonfigurasi melalui `.env.test` sebelum menjalankan integration tests.*
 
-### Validasi Build
-```bash
-cd frontend
-bun run lint
-bun run build
+### Test Coverage
+
+Berdasarkan eksekusi pengujian terakhir:
+
+```text
+Unit Test:
+Passed: 27
+Failed: 0
+
+Integration Test:
+Passed: 19
+Failed: 0
 ```
 
+---
+
+## Build & Production
+
+Untuk melakukan build pada proyek frontend:
+
 ```bash
-cd backend
-bunx prisma validate
+cd frontend
+bun run build
+```
+*(Atau `npm run build`)*
+
+Hasil build statis akan tersedia di dalam folder `frontend/dist`.
+*(Saat ini belum ada konfigurasi deployment/production khusus untuk backend pada repository).*
+
+---
+
+## Troubleshooting
+
+- **PostgreSQL tidak berjalan**: Pastikan service PostgreSQL sudah berjalan di sistem/background OS Anda (via services.msc di Windows atau `brew services start postgresql` di Mac).
+- **DATABASE_URL salah / Error P1001**: Periksa kembali format URL di `.env`, pastikan username, password, port (umumnya 5432), dan nama database valid.
+- **Prisma client belum di-generate**: Jalankan `bunx prisma generate` di folder `backend`. Muncul error "PrismaClient is not defined" jika langkah ini dilewati.
+- **Port backend/frontend sudah digunakan**: Pastikan tidak ada aplikasi lain yang menggunakan port `3001` (Backend) dan `5173` (Frontend). Anda dapat mematikan proses node/bun di Task Manager atau merestart terminal.
+
+---
+
+## Final Checklist
+
+```text
+[x] Project overview
+[x] Tech stack
+[x] Requirements
+[x] Project structure
+[x] Backend setup
+[x] Frontend setup
+[x] PostgreSQL setup
+[x] Prisma setup
+[x] Environment variables
+[x] API documentation
+[x] Authentication documentation
+[x] Request examples
+[x] Response examples
+[x] HTTP status codes
+[x] Unit testing
+[x] Integration testing
+[x] Build instructions
+[x] Troubleshooting
 ```
