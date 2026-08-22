@@ -14,6 +14,8 @@ export const Menu: React.FC = () => {
 
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<string[]>(['All']);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Derived available maximum price from all original products
   const availableMaxPrice = products.length > 0 
@@ -28,13 +30,19 @@ export const Menu: React.FC = () => {
   }, [products, availableMaxPrice]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/merch');
-      if (res.ok) {
+      setIsLoading(true);
+      setError(null);
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+      const res = await fetch(`${baseUrl}/api/merch`);
+      
+      const contentType = res.headers.get('content-type');
+      if (res.ok && contentType && contentType.includes('application/json')) {
         const data = await res.json();
         const mappedData = data.map((item: any) => ({
           ...item,
@@ -49,9 +57,14 @@ export const Menu: React.FC = () => {
           if (p.category) catSet.add(p.category);
         });
         setCategories(['All', ...Array.from(catSet)]);
+      } else {
+        setError('Gagal memuat data produk. Backend API mungkin belum terhubung atau belum tersedia di environment ini.');
       }
     } catch (error) {
       console.error('Failed to fetch products:', error);
+      setError('Koneksi ke server gagal. Pastikan backend API berjalan dengan benar.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -171,7 +184,20 @@ export const Menu: React.FC = () => {
             </div>
           </div>
 
-          {filteredProducts.length > 0 ? (
+          {isLoading ? (
+            <div className="no-results" style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <h3>Loading products...</h3>
+              <p>Please wait.</p>
+            </div>
+          ) : error ? (
+            <div className="no-results" style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'red' }}>
+              <h3>Oops! Terjadi Kesalahan</h3>
+              <p>{error}</p>
+              <button className="btn btn-outline" onClick={fetchProducts} style={{ marginTop: '1rem' }}>
+                Coba Lagi
+              </button>
+            </div>
+          ) : filteredProducts.length > 0 ? (
             <div className="menu-grid">
               {filteredProducts.map(product => (
                 <CustomerProductCard key={product.id} {...product} />
