@@ -1,7 +1,27 @@
-import { app } from '../index';
+let app: any;
+let initError: any;
 
 export default async function handler(req: any, res: any) {
   try {
+    // Lazy load the app to catch initialization errors (e.g. Prisma or Elysia)
+    if (!app && !initError) {
+      try {
+        const module = await import('../index');
+        app = module.app;
+      } catch (err: any) {
+        initError = err;
+      }
+    }
+
+    if (initError) {
+      res.status(500).json({
+        error: 'Initialization Failed',
+        details: initError.message,
+        stack: initError.stack
+      });
+      return;
+    }
+
     // 1. Convert Vercel Node Request to Web Standard Request
     const protocol = req.headers['x-forwarded-proto'] || 'https';
     const host = req.headers.host || 'localhost';
@@ -40,3 +60,4 @@ export default async function handler(req: any, res: any) {
     });
   }
 }
+
