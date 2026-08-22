@@ -2,9 +2,9 @@ import { Elysia, t } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import { jwt } from "@elysiajs/jwt";
-import { prisma } from "./db";
+import { prisma } from "./db.js";
 import bcrypt from "bcryptjs";
-import { checkAuth } from "./utils/auth";
+import { checkAuth } from "./utils/auth.js";
 
 export const app = new Elysia()
   .use(cors())

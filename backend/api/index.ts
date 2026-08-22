@@ -6,7 +6,7 @@ export default async function handler(req: any, res: any) {
     // Lazy load the app to catch initialization errors (e.g. Prisma or Elysia)
     if (!app && !initError) {
       try {
-        const module = await import('../index');
+        const module = await import('../index.js');
         app = module.app;
       } catch (err: any) {
         initError = err;

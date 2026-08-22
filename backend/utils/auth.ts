@@ -1,4 +1,4 @@
-import { prisma } from "../db";
+import { prisma } from "../db.js";
 
 export const checkAuth = async (headers: any, jwt: any, set: any, requireAdmin: boolean = false) => {
   const authHeader = headers.authorization || headers.Authorization;
