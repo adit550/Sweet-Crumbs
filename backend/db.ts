@@ -4,7 +4,10 @@ import { Pool } from "pg";
 
 const connectionUrl = process.env.DATABASE_URL || process.env.DIRECT_URL || "postgresql://postgres:postgres@localhost:5432/bakery_db?schema=public";
 
-const pool = new Pool({ connectionString: connectionUrl });
+const pool = new Pool({ 
+  connectionString: connectionUrl,
+  ssl: connectionUrl.includes('supabase.com') ? { rejectUnauthorized: false } : undefined
+});
 const adapter = new PrismaPg(pool);
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
