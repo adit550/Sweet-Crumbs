@@ -263,12 +263,28 @@ Jika saat menjalankan backend muncul error koneksi Prisma:
 
 ## Testing
 
-*Saat ini tes otomatis (unit test / integration test) belum terstruktur, namun bisa divalidasi dengan build check:*
+### Unit Testing
+
+Testing menggunakan Bun Test. Unit Test difokuskan untuk menguji logika bisnis tanpa bergantung pada database production.
+
+Run:
+```bash
+cd backend
+bun test
+```
+
+Test yang telah dibuat dan dijalankan:
+- **Product validation**: Menguji validasi input (nama, harga, stok) saat membuat produk baru.
+- **Order calculation**: Menguji fungsi kalkulasi order (subtotal, biaya pengiriman, total).
+- **Authentication validation**: Menguji validasi login dan registrasi (email valid, format password).
+
+### Validasi Build
 ```bash
 cd frontend
-npm run lint
-npm run build
+bun run lint
+bun run build
 ```
+
 ```bash
 cd backend
 bunx prisma validate

@@ -1,5 +1,9 @@
 import { expect, test, describe, mock } from "bun:test";
 
+mock.module("../../utils/auth", () => ({
+  checkAuth: mock(async () => ({ user: { id: "user-id", role: "CUSTOMER" } }))
+}));
+
 // We will mock Prisma completely so it never hits PostgreSQL
 mock.module("../../db", () => ({
   prisma: {

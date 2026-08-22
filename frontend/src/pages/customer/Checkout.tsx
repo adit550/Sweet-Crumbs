@@ -4,6 +4,7 @@ import { CheckCircle2, MapPin, CreditCard, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { calculateSubtotal, calculateDelivery, calculateTotal } from '../../utils/cartCalculations';
 import './Checkout.css';
 
 export const Checkout: React.FC = () => {
@@ -14,9 +15,9 @@ export const Checkout: React.FC = () => {
 
   const [customerName, setCustomerName] = useState(user?.email || '');
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const delivery = subtotal > 0 ? 15000 : 0;
-  const total = subtotal + delivery;
+  const subtotal = calculateSubtotal(cartItems);
+  const delivery = calculateDelivery(subtotal);
+  const total = calculateTotal(subtotal, 0, delivery);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Minus, Plus, ArrowRight, ShoppingCart } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { calculateSubtotal, calculateDelivery, calculateTotal } from '../../utils/cartCalculations';
 import './Cart.css';
 
 export const Cart: React.FC = () => {
@@ -12,10 +13,10 @@ export const Cart: React.FC = () => {
     removeFromCart(id);
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = calculateSubtotal(cartItems);
   const discount = 0; // Or calculate based on promo code
-  const delivery = subtotal > 0 ? 15000 : 0;
-  const total = subtotal - discount + delivery;
+  const delivery = calculateDelivery(subtotal);
+  const total = calculateTotal(subtotal, discount, delivery);
 
   return (
     <div className="cart-page">

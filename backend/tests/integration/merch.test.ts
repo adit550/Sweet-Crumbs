@@ -12,7 +12,8 @@ describe("Integration: Merchandise API CRUD & DB Persistance", () => {
     await prisma.user.deleteMany({ where: { email: "admin_merch@test.com" }});
     
     // Create admin user and login to get token
-    const pwd = await Bun.password.hash("admin123");
+    const bcrypt = require("bcryptjs");
+    const pwd = await bcrypt.hash("admin123", 10);
     await prisma.user.create({
       data: { email: "admin_merch@test.com", password: pwd, role: "ADMIN" }
     });
