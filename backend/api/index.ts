@@ -1,40 +1,42 @@
-let app: any;
-let initError: any;
+import { app } from '../index.js';
 
-try {
-  // Use dynamic import to catch top-level initialization errors (like Prisma missing ENV)
-  const module = await import('../index.js');
-  app = module.app;
-} catch (e: any) {
-  initError = e;
-}
-
-export default async function fetch(request: Request) {
-  if (initError) {
-    return new Response(JSON.stringify({ 
-      error: 'Initialization Failed', 
-      details: initError.message, 
-      stack: initError.stack 
-    }), { 
-      status: 500, 
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } 
-    });
-  }
-  
+export default async function handler(req: any, res: any) {
   try {
-    return await app.handle(request);
+    // 1. Convert Vercel Node Request to Web Standard Request
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers.host || 'localhost';
+    const url = new URL(req.url!, `${protocol}://${host}`);
+
+    const init: RequestInit = {
+      method: req.method,
+      headers: req.headers as any,
+    };
+
+    // If it's a POST/PUT request, Vercel already parsed the JSON body into req.body
+    if (req.method !== 'GET' && req.method !== 'HEAD' && req.body) {
+      init.body = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    }
+
+    const webRequest = new Request(url.toString(), init);
+
+    // 2. Pass to Elysia
+    const response = await app.handle(webRequest);
+
+    // 3. Convert Web Standard Response back to Vercel Node Response
+    res.status(response.status);
+    
+    response.headers.forEach((value: string, key: string) => {
+      res.setHeader(key, value);
+    });
+
+    const text = await response.text();
+    res.send(text);
   } catch (e: any) {
-    return new Response(JSON.stringify({ 
+    console.error("Vercel Handler Error:", e);
+    res.status(500).json({ 
       error: 'Runtime Failed', 
-      details: e.message, 
-      stack: e.stack,
-      env: {
-        hasDatabaseUrl: !!process.env.DATABASE_URL,
-        hasDirectUrl: !!process.env.DIRECT_URL
-      }
-    }), { 
-      status: 500, 
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } 
+      details: e.message,
+      stack: e.stack
     });
   }
 }
