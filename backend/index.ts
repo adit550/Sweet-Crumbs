@@ -725,7 +725,7 @@ app.get(
 
 // Only listen locally on Bun. Vercel Node runtime doesn't support listen().
 if (typeof Bun !== "undefined") {
-  app.listen(3001);
+  app.listen(process.env.PORT || 3001);
   console.log(
     `🚀 Server running at http://${app.server?.hostname}:${app.server?.port}`
   );

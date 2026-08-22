@@ -27,7 +27,11 @@ export default async function fetch(request: Request) {
     return new Response(JSON.stringify({ 
       error: 'Runtime Failed', 
       details: e.message, 
-      stack: e.stack 
+      stack: e.stack,
+      env: {
+        hasDatabaseUrl: !!process.env.DATABASE_URL,
+        hasDirectUrl: !!process.env.DIRECT_URL
+      }
     }), { 
       status: 500, 
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } 
